@@ -1,10 +1,8 @@
 const API_URL = 'http://localhost:3000';
 
-// State
 let events = [];
 let userBookings = [];
 
-// Utility Functions
 function showNotification(message, type = 'info') {
     const notification = document.getElementById('notification');
     notification.textContent = message;
@@ -33,7 +31,6 @@ function getSeatsClass(availableSeats, totalSeats) {
     return 'seats-available';
 }
 
-// API Functions
 async function fetchEvents() {
     try {
         const response = await fetch(`${API_URL}/events`);
@@ -131,7 +128,6 @@ async function fetchUserBookings() {
     }
 }
 
-// Render Functions
 function renderEvents() {
     const eventsList = document.getElementById('eventsList');
     
@@ -194,10 +190,8 @@ function renderUserBookings() {
     `).join('');
 }
 
-// Event Listeners
 document.getElementById('loadBookingsBtn').addEventListener('click', fetchUserBookings);
 
-// Initial Load
 document.addEventListener('DOMContentLoaded', () => {
     fetchEvents();
     console.log('🚀 Event Booking System initialized');

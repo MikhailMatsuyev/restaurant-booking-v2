@@ -1,13 +1,11 @@
 const { Kafka } = require('kafkajs');
 const { Pool } = require('pg');
 
-// Настройка Kafka
 const kafka = new Kafka({
   clientId: 'booking-service',
   brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
 });
 
-// Настройка PostgreSQL
 const pool = new Pool({
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5432'),
@@ -53,10 +51,7 @@ async function processBookingEvent(message) {
 
 async function logBookingEvent(bookingData) {
   try {
-    // Можно создать таблицу booking_logs для аудита
     console.log('📝 Logging booking event to database...');
-    // const query = 'INSERT INTO booking_logs (booking_id, event_id, user_id, action, timestamp) VALUES ($1, $2, $3, $4, NOW())';
-    // await pool.query(query, [bookingData.id, bookingData.event_id, bookingData.user_id, 'CREATED']);
   } catch (error) {
     console.error('Error logging booking event:', error);
   }
@@ -68,13 +63,6 @@ async function sendEmailNotification(bookingData) {
     console.log(`   To: ${bookingData.user_id}`);
     console.log(`   Subject: Booking Confirmation - ${bookingData.event_name}`);
     console.log(`   Message: Your booking (ID: ${bookingData.id}) has been confirmed!`);
-    
-    // Здесь можно добавить реальную отправку email через SendGrid, AWS SES и т.д.
-    // await emailService.send({
-    //   to: bookingData.user_id,
-    //   subject: `Booking Confirmation - ${bookingData.event_name}`,
-    //   body: `Your booking has been confirmed!`
-    // });
   } catch (error) {
     console.error('Error sending email notification:', error);
   }
@@ -82,20 +70,16 @@ async function sendEmailNotification(bookingData) {
 
 async function run() {
   try {
-    // Подключение к Kafka
     await consumer.connect();
     console.log('✅ Booking Service connected to Kafka');
 
-    // Подключение к PostgreSQL
     const client = await pool.connect();
     console.log('✅ Booking Service connected to PostgreSQL');
     client.release();
 
-    // Подписка на топик
     await consumer.subscribe({ topic: 'booking-events', fromBeginning: true });
     console.log('📡 Subscribed to booking-events topic');
 
-    // Обработка сообщений
     await consumer.run({
       eachMessage: async ({ topic, partition, message }) => {
         console.log(`📥 Message received from ${topic} [${partition}]`);
@@ -110,7 +94,6 @@ async function run() {
   }
 }
 
-// Graceful shutdown
 process.on('SIGTERM', async () => {
   console.log('SIGTERM received, shutting down gracefully...');
   await consumer.disconnect();

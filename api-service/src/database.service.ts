@@ -14,7 +14,6 @@ export class DatabaseService implements OnModuleInit {
       password: process.env.DB_PASSWORD || 'postgres',
     });
 
-    // Проверка подключения
     try {
       const client = await this.pool.connect();
       console.log('✅ Connected to PostgreSQL');
@@ -42,7 +41,6 @@ export class DatabaseService implements OnModuleInit {
     return this.pool.connect();
   }
 
-  // Методы для работы с events
   async getAllEvents() {
     const query = `
       SELECT 
@@ -98,7 +96,6 @@ export class DatabaseService implements OnModuleInit {
         try {
             await client.query('BEGIN');
 
-            // Шаг 1: Проверяем, не забронировал ли пользователь уже это мероприятие
             const existingBookingQuery = `
       SELECT id FROM bookings
       WHERE event_id = $1 AND user_id = $2
@@ -109,7 +106,6 @@ export class DatabaseService implements OnModuleInit {
                 throw new Error('User has already booked this event');
             }
 
-            // Шаг 2: Блокируем строку мероприятия
             const eventQuery = `
       SELECT id, total_seats
       FROM events
@@ -124,7 +120,6 @@ export class DatabaseService implements OnModuleInit {
 
             const event = eventResult.rows[0];
 
-            // Шаг 3: Считаем бронирования
             const bookingsCountQuery = `
       SELECT COUNT(*) as count
       FROM bookings
@@ -152,7 +147,6 @@ export class DatabaseService implements OnModuleInit {
         } catch (error) {
             await client.query('ROLLBACK');
 
-            // Обработка ошибки PostgreSQL constraint
             if (error.code === '23505' && error.constraint === 'unique_user_event') {
                 throw new Error('User has already booked this event');
             }

@@ -2,21 +2,10 @@
 
 Быстрое руководство для запуска Event Booking System v2.0
 
-### Новая версия (restaurant-booking-v2)
+### restaurant-booking-v2)
 - Бронирование **мест на мероприятия**
 - Таблицы: `events`, `bookings`
 - API endpoint: `POST /api/bookings/reserve`
-
-## 📋 Основные отличия API
-
-### Новый API ✅
-```http
-POST /api/bookings/reserve
-{
-  "event_id": 1,
-  "user_id": "user123"
-}
-```
 
 ## 🚀 Запуск за 3 минуты
 
@@ -59,7 +48,7 @@ npm start
 ### Шаг 4: Запустите Frontend (новый терминал)
 ```bash
 cd restaurant-booking-v2/frontend
-python3 -m http.server 8080
+npx http-server -p 8080 -c-1
 ```
 
 ### Шаг 5: Откройте браузер
