@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Booking System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎟️ Event Booking System</h1>
+            <p class="subtitle">Book your seat at amazing events!</p>
+        </header>
+
+        <!-- User ID Input -->
+        <div class="user-section">
+            <label for="userId">Your User ID:</label>
+            <input 
+                type="text" 
+                id="userId" 
+                placeholder="Enter your user ID (e.g., user123)"
+                value="user123"
+            >
+        </div>
+
+        <!-- Events List -->
+        <div class="events-container" id="eventsContainer">
+            <h2>Available Events</h2>
+            <div id="eventsList" class="events-list">
+                <div class="loading">Loading events...</div>
+            </div>
+        </div>
+
+        <!-- User Bookings -->
+        <div class="bookings-container">
+            <h2>Your Bookings</h2>
+            <button id="loadBookingsBtn" class="btn btn-secondary">Load My Bookings</button>
+            <div id="bookingsList" class="bookings-list"></div>
+        </div>
+
+        <!-- Notification Area -->
+        <div id="notification" class="notification"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
